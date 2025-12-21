@@ -13,6 +13,17 @@ struct Student{
     long long userId;
     string name;
     int age; 
+
+    // C++ 与 Java 相同, 允许类有多个构造函数
+    Student(){cout << "default Constructor Function of Student" << endl;}; // 无参构造函数(若没有定义, 编译器会默认合成一个构造函数)
+    Student(long long userIdInt, string nameStr, int ageInt){
+        userId = userIdInt;
+        name = nameStr;
+        age = ageInt;
+        cout << "Constructor Function of Student" << endl;
+    }; // 带参构造函数
+    // 析构函数(当对象被销毁时自动调用 编译器自动判断这个对象的生命周期)
+    ~Student(){cout << "Destructor Functions of Student" << endl;}; 
 };
 
 struct Teacher{
@@ -23,6 +34,14 @@ struct Teacher{
     private: // 私有成员变量
         long long sbPoint;
     public: // 公有成员方法
+        Teacher(){cout << "default Constructor Function of Teacher" << endl;};
+        Teacher(string nameStr, int ageInt, long long sbPointInt){
+            name = nameStr;
+            age = ageInt;
+            sbPoint = sbPointInt;
+            cout << "Constructor Function of Teacher" << endl;
+        };
+        ~Teacher(){cout << "Destructor Functions of Teacher" << endl;};
         string getName(void) const{
             return name;
         }
@@ -65,29 +84,57 @@ class People{
     public:
         string name;
         int age;
+        People(){cout << "default Constructor Function of People" << endl;};
+        People(string nameStr, int ageInt){
+            name = nameStr;
+            age = ageInt;
+            cout << "Constructor Function of People" << endl;
+        };
+        ~People(){cout << "Destructor Functions of People" << endl;};
 };
-
-
 int main(void){
-    // 通过类初始化对象
-    Student stuObj0;
+    /* 1. 单一对象创建*/
+    // 通过类初始化对象(栈上)
+    Student stuObj0(42019004, "Maxim", 18);
     Student stuObj1;
-    Teacher zwgObj;
-
-    // 成员变量赋值
-    stuObj0.userId = 42019004;
-    stuObj0.name = "Maxim";
-    stuObj0.age = 18;
+    Teacher zwgObj("MASHUZHONG", -1, 99999999);
     // 类赋值(C++中允许一整个类中每一个成员变量对另外相同类中的对应成员变量赋值)
     stuObj1 = stuObj0; // 赋值完之后, 此时stuObj0 与 stuObj1 两个对象之间依然独立！
-    zwgObj.name = "MASHUZHONG";
-    zwgObj.age = -1;
-    zwgObj.setSbPoint(99999999);
-
     // 查看变量属性
     cout << "Student name: " << stuObj1.name << endl; 
     cout << "Student age: " << stuObj1.age << endl;
     cout << "Teacher name: " << zwgObj.name << endl;
     cout << "sbPoint: " << zwgObj.getSbPoint() << endl;
+
+    /* 2. 堆上对象创建 */
+    Teacher* p = new Teacher("ZHAOWEIGUO", -1, 99999999);
+    // 堆上对象赋值
+    p->age = 50;
+    p->setSbPoint(99999999);
+    // 查看堆上对象属性
+    cout << "Teacher name: " << p->name << endl;
+    cout << "Teacher age: " << p->getAge() << endl;
+    cout << "Teacher sbPoint: " << p->getSbPoint() << endl;
+    delete p;
+    p = nullptr;
+
+    /* 3. 堆上数组对象创建 */
+    int arrSize = 5;
+    Teacher *tchArr = new Teacher[arrSize];
+    for (int i = 0; i < arrSize; i++){
+        // 堆上数组对象赋值
+        tchArr[i].setSbPoint(i * 10000);
+        tchArr[i].name = "MASHUZHONG";
+        tchArr[i].age = 58;
+    };
+    for (int i = 0; i < arrSize; i++){
+        // 查看堆上数组对象属性
+        cout << "Teacher name: " << tchArr[i].name << endl;
+        cout << "Teacher age: " << tchArr[i].getAge() << endl;
+        cout << "Teacher sbPoint: " << tchArr[i].getSbPoint() << endl;
+        cout << endl;
+    };
+    delete[] tchArr;
+
     return 0;
 }

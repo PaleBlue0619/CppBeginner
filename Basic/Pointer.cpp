@@ -37,7 +37,7 @@ int pointerCal(void){
     int startIdx = 2;
     heapArr_b = heapArr_b + startIdx; // 指针移动跳过 2 个元素
     for(int i=startIdx+1; i<k; i++){
-         *(heapArr_b+i) = *(heapArr_b+i-1)+1;
+        *(heapArr_b + i) = i;
         // 指针+整数 = 指针指向偏移整数个元素
     }
 
@@ -50,9 +50,48 @@ int pointerCal(void){
 
     // 手动释放内存,避免内存泄露
     delete[] heapArr_a;
-    delete[] heapArr_b;
+    // delete[] heapArr_b;
     return 0;
-}
+};
+
+void func(int* p){
+    // 指针解引用
+    cout << "p=" << *p << endl; 
+    // 重新赋值
+    *p = 100.0;
+};
+
+void arrFunc(int* p, int size){
+    // 数组元素指针解引用
+    for (int i=0; i<size; i++){
+        p[i] = i * i; // 重新赋值  - 方式1
+        *p = i * i; // 重新赋值 - 方式2
+        p = p + 1;
+    };
+};
+
+void pointerTransfer(void){
+    /* 函数指针传递
+    1. 将变量的地址（指针）传递给函数
+    2. 传递数组首元素地址
+    */
+    
+    // 将变量的地址（指针）传递给参数
+    int a = 1;
+    int* p = &a; // 指针存储地址
+    func(p);
+    cout << "a=" << a << endl; // 100
+
+    // 传递数组首元素地址
+    int* arr = new int[4] {0, 1, 2, 3}; // 堆上开辟数组
+    // 获取数组首元素地址
+    int* ptr = arr; // 首元素的指针
+    cout << "ptr=" << *ptr << endl;
+    arrFunc(arr, 4);
+    // 查看修改后的堆上数组
+    cout << "arr=" << arr[0] << arr[1] << arr[2] << arr[3] << endl;
+    delete[] arr;
+};
 
 int main(void){
     /* 区别&与* 
@@ -71,6 +110,9 @@ int main(void){
 
     /* 指针运算 */
     pointerCal();
+
+    /* 函数指针传递 */
+    pointerTransfer();
 
     return 0;
 }
