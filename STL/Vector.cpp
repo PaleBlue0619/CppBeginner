@@ -14,11 +14,11 @@ int main(void){
     // 元素添加 & 访问
     arr.push_back(1); // FIFO的Queue
     cout << "arr[0] = " << arr[0] << endl;
+    arr.pop_back(); // 删除队列末尾的元素
 
     // 动态数组扩容 & 查看容量
     arr.reserve(10);
     cout << "arr.capacity() = " << arr.capacity() << endl;
     // 此时如果访问arr[1]会直接报错: Assertion '__n < this->size()' failed.
-
     return 0;
 }
